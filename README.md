@@ -14,8 +14,11 @@ The following is required in a `.env` file:
 - `YO_EMOJI`: the "yo" emoji using Discord's format. Ex: `<:yo:689957806891204660>`
 - `NO_EMOJI`: the "no" emoji using Discord's format. Ex: `<:no:483957824851202621>`
 
-## Usage
+## Build
 
-`python3 -m pip install -U discord.py`
+`docker build -t yobot .`
 
-`python3 main.py`
+## Run
+
+`docker run --rm -d yobot`
+
