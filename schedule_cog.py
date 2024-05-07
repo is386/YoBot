@@ -28,7 +28,7 @@ class ScheduleCog(commands.Cog):
 
         reaction_count = 0
         while True:
-            reaction, user = await self.bot.wait_for('reaction_add', check=check_reaction)
+            reaction, user = await self.bot.wait_for('reaction_add', check=check_reaction, timeout=7200.0)
             
             if str(reaction.emoji) == NO_EMOJI:
                 await channel.send("@everyone thats gonna be a **NO** from me")
