@@ -1,5 +1,6 @@
 import datetime
 
+from asyncio import TimeoutError
 from discord import Embed
 from discord.ext import commands, tasks
 from env import CHANNEL_ID, SCHEDULE_HOUR, SCHEDULE_MINUTE, TZ_IDENTIFIER, YO_EMOJI, NO_EMOJI
@@ -26,16 +27,20 @@ class ScheduleCog(commands.Cog):
         await message.add_reaction(YO_EMOJI)
         await message.add_reaction(NO_EMOJI)
 
-        reaction_count = 0
+        reacted_users = set()
         while True:
-            reaction, user = await self.bot.wait_for('reaction_add', check=check_reaction, timeout=7200.0)
-            
-            if str(reaction.emoji) == NO_EMOJI:
-                await channel.send("@everyone thats gonna be a **NO** from me")
-                break
-            elif str(reaction.emoji) == YO_EMOJI:
-                reaction_count += 1
+            try: 
+                reaction, user = await self.bot.wait_for('reaction_add', check=check_reaction, timeout=75.0)
+                
+                if str(reaction.emoji) == NO_EMOJI:
+                    await channel.send("@everyone thats gonna be a **NO** from me")
+                    break
+                elif str(reaction.emoji) == YO_EMOJI:
+                    reacted_users.add(user)
 
-            if reaction_count == 3:
-                await channel.send("@everyone **YO**, hop on voice chat")
+                if len(reacted_users) == 3:
+                    await channel.send("@everyone **YO**, hop on voice chat")
+                    break
+
+            except TimeoutError:
                 break
