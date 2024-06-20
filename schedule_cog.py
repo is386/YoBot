@@ -31,15 +31,15 @@ class ScheduleCog(commands.Cog):
         while True:
             try: 
                 reaction, user = await self.bot.wait_for('reaction_add', check=check_reaction, timeout=5400.0)
-                
-                if str(reaction.emoji) == NO_EMOJI:
-                    await channel.send("@everyone thats gonna be a **NO** from me")
-                    break
-                elif str(reaction.emoji) == YO_EMOJI:
+
+                if (user in reacted_users):
+                    continue
+
+                if str(reaction.emoji) == NO_EMOJI or str(reaction.emoji) == YO_EMOJI:
+                    await channel.send("**%s:** %s" % (user, str(reaction.emoji)))
                     reacted_users.add(user)
 
                 if len(reacted_users) == 3:
-                    await channel.send("@everyone **YO**, hop on voice chat")
                     break
 
             except TimeoutError:
