@@ -32,9 +32,6 @@ class ScheduleCog(commands.Cog):
             try: 
                 reaction, user = await self.bot.wait_for('reaction_add', check=check_reaction, timeout=5400.0)
 
-                if (user in reacted_users):
-                    continue
-
                 if str(reaction.emoji) == NO_EMOJI or str(reaction.emoji) == YO_EMOJI:
                     await channel.send("**%s:** %s" % (user, str(reaction.emoji)))
                     reacted_users.add(user)
